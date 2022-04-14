@@ -26,7 +26,7 @@ module "ecs" {
 }
 
 module "ctx" {
-  source = "git::https://github.com/bsp-dx/edu-terraform-aws.git?ref=tfmodule-context-..."
+  source = "git::https://code.bespinglobal.com/scm/op/tfmodule-context.git"
   context = {  
     # ... You need to define context variables ...
   }
