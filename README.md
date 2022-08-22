@@ -79,21 +79,17 @@ EC2 시작 유형은 Amazon ECS 클러스터를 등록하고 직접 관리하는
 
 ## Input Variables
 
-| Name | Description | Type | Example | Required |
-|------|-------------|------|---------|:--------:|
-| capacity_providers | capacity providers 는 작업 및 서비스를 실행하는 데 필요한 가용성, 확장성 및 비용을 개선합니다. 유효한 capacity provider 는 FARGATE 및 FARGATE_SPOT 입니다. | list(string) | ["FARGATE", "FARGATE_SPOT"] | No |
-| default_capacity_provider_strategy | 클러스터에 기본적으로 사용할 capacity_providers 전략입니다. | list(map(any)) | {} | No |
-| enable_lifecycle_policy | 리포지토리에 수명 주기 정책의 추가 여부를 설정 합니다. | bool | false| No |
-| scan_images_on_push | 이미지가 저장소로 푸시된 후 스캔 여부를 설정 합니다. | bool | true| No |
-| principals_full     | ECR 저장소의 전체 액세스 권한을 가지는 IAM 리소스 ARN 입니다. | list(string) | ["arn:aws:iam::111111:user/apple_arn", "arn:aws:iam::111111:role/admin_arn"] | No |
-| principals_readonly | ECR 저장소의 읽기 전용 IAM 리소스 ARN 입니다. | list(string) | ["*"] | No |
-| tags | ECR 저장소의 태그 속성을 정의 합니다. | obejct({}) | <pre>{<br>    Project = "simple"<br>    Environment = "Test"<br>    Team = "DX"<br>    Owner = "symplesims@email.com"<br>}</pre> | Yes |
-| name | ECS 클러스터 이름을 정의 합니다. | string | - | No |
-| container_insights | ECS 클러스터의 컨테이너 정보를 식별하기 위해 CloudWatch 로그 그룹에 적재 할지 여부입니다. | bool | false | No |
-| middle_name | ECS 클러스터의 중간 이름을 설정 합니다. (여러개의 ECS 클러스터를 구성 할 때 정의 합니다.) | string | - | No |
-| create_ecs_task_execution_role | 프로젝트를 위한 별도의 ECS 작업 실행 역할을 생성할지 여부입니다. (Region 에서 관리하는 것을 권장합니다.) | bool | false | No |
+| Name                               | Description                                                                                                         | Type           | Example                                                                                                                          | Required |
+|------------------------------------|---------------------------------------------------------------------------------------------------------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------|:--------:|
+| cluster_name                       | ECS 클러스터의 이름을 설정 합니다. 설정하지 않으면 자동으로 생성 합니다.                                                                         | string         | -                                                                                    |    No    |
+| capacity_providers                 | capacity providers 는 작업 및 서비스를 실행하는 데 필요한 가용성, 확장성 및 비용을 개선합니다. 유효한 capacity provider 는 FARGATE 및 FARGATE_SPOT 입니다. | list(string)   | ["FARGATE", "FARGATE_SPOT"]                                                      |    No    |
+| default_capacity_provider_strategy | 클러스터에 기본적으로 사용할 capacity_providers 전략입니다.                                                                           | list(map(any)) | {}                                                                                        |    No    |
+| enable_lifecycle_policy            | 리포지토리에 수명 주기 정책의 추가 여부를 설정 합니다.                                                                                     | bool           | false                                                                                   |    No    |
+| container_insights                 | ECS 클러스터의 컨테이너 정보를 식별하기 위해 CloudWatch 로그 그룹에 적재 할지 여부입니다.                                                           | bool           | false                                                                               |    No    |
+| create_ecs_task_execution_role     | 프로젝트를 위한 별도의 ECS 작업 실행 역할을 생성할지 여부입니다.                                                                              | bool           | true                                                                                  |    No    |
+| ecs_task_role_name                 | ECS 클러스터 전용 작업 실행 역할을 생성 합니다. create_ecs_task_execution_role 값이 true 인 경우에만 생성 됩니다.                                | string         | -                                                                                    |    No    |
 | context | 프로젝트에 관한 리소스를 생성 및 관리에 참조 되는 정보로 표준화된 네이밍 정책 및 리소스를 위한 속성 정보를 포함하며 이를 통해 데이터 소스 참조에도 활용됩니다. | object({}) | - | Yes |
-| __________________________________ | ______________________________________________________ | ___ | ___ | ___ |
+
 
 
 ## Output Values

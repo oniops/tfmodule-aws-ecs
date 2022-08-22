@@ -1,5 +1,5 @@
 locals {
-  ecs_task_role_name = var.middle_name == null ? "${var.context.project}EcsTaskExecutionRole" : "${var.context.project}-${var.middle_name}-ecsTaskExecutionRole"
+  ecs_task_role_name = var.ecs_task_role_name == null ? "${var.context.project}EcsTaskExecutionRole" : var.ecs_task_role_name
 }
 
 data "aws_iam_policy_document" "ecs_task_assume_role" {
@@ -20,7 +20,9 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 
   name               = local.ecs_task_role_name
   assume_role_policy = concat(data.aws_iam_policy_document.ecs_task_assume_role.*.json, [""])[0]
-  tags               = merge(var.context.tags, { Name = local.ecs_task_role_name })
+  tags               = merge(var.context.tags,
+    { Name = local.ecs_task_role_name }
+  )
 }
 
 data "aws_iam_policy" "ecs_task_execution_policy" {

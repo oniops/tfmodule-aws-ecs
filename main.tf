@@ -1,5 +1,5 @@
 locals {
-  cluster_name = var.middle_name == null ? "${var.context.name_prefix}-ecs" : "${var.context.name_prefix}-${var.middle_name}-ecs"
+  cluster_name = var.cluster_name == null ? "${var.context.name_prefix}-ecs" : var.cluster_name
 }
 
 resource "aws_ecs_cluster" "this" {
@@ -25,5 +25,7 @@ resource "aws_ecs_cluster" "this" {
     value = var.container_insights ? "enabled" : "disabled"
   }
 
-  tags = merge(var.context.tags, { Name = local.cluster_name })
+  tags = merge(var.context.tags,
+    { Name = local.cluster_name }
+  )
 }

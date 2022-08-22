@@ -4,8 +4,8 @@ variable "create_ecs" {
   default     = true
 }
 
-variable "middle_name" {
-  description = "The middle name of ECS Cluster"
+variable "cluster_name" {
+  description = "The cluster name of ECS Cluster. if not set automatically generate it."
   type        = string
   default     = null
 }
@@ -29,7 +29,13 @@ variable "container_insights" {
 }
 
 variable "create_ecs_task_execution_role" {
-  description = "Whether to create ECS task-execution-role. default is `false`."
+  description = "Whether to create ECS task-execution-role."
   type        = bool
-  default     = false
+  default     = true
+}
+
+variable "ecs_task_role_name" {
+  description = "Whether to create task-execution-role for this ECS Cluster. only support create_ecs_task_execution_role is `true`."
+  type        = string
+  default     = null
 }
