@@ -35,7 +35,7 @@ variable "create_ecs_task_execution_role" {
 }
 
 variable "ecs_task_role_name" {
-  description = "Whether to create task-execution-role for this ECS Cluster. only support create_ecs_task_execution_role is `true`."
+  description = "Whether to create task-execution-role for this ECS Cluster. if not set automatically generate it."
   type        = string
   default     = null
 }

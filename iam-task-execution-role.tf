@@ -20,7 +20,8 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 
   name               = local.ecs_task_role_name
   assume_role_policy = concat(data.aws_iam_policy_document.ecs_task_assume_role.*.json, [""])[0]
-  tags               = merge(var.context.tags,
+  tags               = merge(
+    var.context.tags,
     { Name = local.ecs_task_role_name }
   )
 }
