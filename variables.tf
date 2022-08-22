@@ -25,7 +25,7 @@ variable "default_capacity_provider_strategy" {
 variable "container_insights" {
   description = "Controls if ECS Cluster has container insights enabled"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "create_ecs_task_execution_role" {
