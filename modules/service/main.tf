@@ -41,7 +41,7 @@ locals {
 }
 
 resource "aws_ecs_task_definition" "this" {
-  family                   = format("%s-ecs-td", local.task_name)
+  family                   = local.task_name
   requires_compatibilities = var.requires_compatibilities
   network_mode             = "awsvpc"
 
@@ -52,7 +52,9 @@ resource "aws_ecs_task_definition" "this" {
   memory                = var.memory
   container_definitions = "[${jsonencode(local.container_definition)}]"
 
-  tags = merge(var.context.tags, var.tags)
+  tags = merge(var.context.tags, var.tags,
+    { Name = local.task_name }
+  )
 }
 
 resource "aws_ecs_service" "this" {
