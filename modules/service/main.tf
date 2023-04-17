@@ -1,13 +1,15 @@
 locals {
-  service_name         = format("%s-%s", var.context.name_prefix, var.container_name)
+  task_name            = format("%s-%s-td", var.context.name_prefix, var.container_name)
+  service_name         = format("%s-%s-ecss", var.context.name_prefix, var.container_name)
+  container_name       = format("%s-%s-ecsc", var.context.name_prefix, var.container_name)
   service_discovery    = format("%s-%s", var.context.project, var.container_name)
-  cwlog_grp_name       = format("/ecs/%s", local.service_name)
+  awslogs_group_name   = format("/ecs/%s", local.service_name)
   enable_load_balancer = var.enable_load_balancer && var.target_group_arn != null && var.container_port > 0 ? true : false
 
   logConfiguration = var.enable_cloudwatch_log_group ? length(keys(var.logConfiguration.options)) > 0 ? var.logConfiguration : {
     logDriver = "awslogs"
     options   = {
-      awslogs-group         = local.cwlog_grp_name
+      awslogs-group         = local.awslogs_group_name
       awslogs-region        = var.context.region
       awslogs-stream-prefix = local.service_name
     }
@@ -17,7 +19,7 @@ locals {
   }
 
   container_definition = {
-    name         = local.service_name
+    name         = local.container_name
     image        = var.container_image
     essential    = var.essential
     memory       = var.memory
@@ -39,7 +41,7 @@ locals {
 }
 
 resource "aws_ecs_task_definition" "this" {
-  family                   = format("%s-ecs-td", local.service_name)
+  family                   = format("%s-ecs-td", local.task_name)
   requires_compatibilities = var.requires_compatibilities
   network_mode             = "awsvpc"
 
@@ -102,7 +104,7 @@ resource "aws_ecs_service" "this" {
 
 resource "aws_cloudwatch_log_group" "this" {
   count             = var.enable_cloudwatch_log_group ? 1 : 0
-  name              = local.cwlog_grp_name
+  name              = local.awslogs_group_name
   retention_in_days = var.retention_in_days
 }
 
