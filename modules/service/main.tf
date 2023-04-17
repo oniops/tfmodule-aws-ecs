@@ -75,7 +75,7 @@ resource "aws_ecs_service" "this" {
   dynamic "load_balancer" {
     for_each = local.enable_load_balancer == true ? [1] : []
     content {
-      container_name   = local.service_name
+      container_name   = local.container_name
       container_port   = var.container_port
       target_group_arn = var.target_group_arn
     }
