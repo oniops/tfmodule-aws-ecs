@@ -53,10 +53,29 @@ variable "kms_key_id" {
   default     = null
 }
 
+variable "create_cloudwatch_log_group" {
+  description = "Whether to create cloudwatch_log_group for execute commands."
+  type        = bool
+  default     = false
+}
+
+variable "retention_in_days" {
+  description = "cloudwatch log group retention_in_days"
+  type        = number
+  default     = 90
+}
+
+variable "enable_s3_bucket_log" {
+  description = "Whether to enable s3_bucket log for execute commands."
+  type        = bool
+  default     = false
+}
+
 variable "execute_command_configuration" {
   type = object({
-    kms_key_id = optional(string)
-    logging    = string
+    logging           = string
+    kms_key_id        = optional(string)
+    log_configuration = optional(any)
   })
   default     = null
   description = <<EOF
@@ -74,24 +93,7 @@ see - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resource
       }
     }
 EOF
-}
 
-variable "create_cloudwatch_log_group" {
-  description = "Whether to create cloudwatch_log_group for execute commands."
-  type        = bool
-  default     = false
-}
-
-variable "retention_in_days" {
-  description = "cloudwatch log group retention_in_days"
-  type        = number
-  default     = 90
-}
-
-variable "enable_s3_bucket_log" {
-  description = "Whether to enable s3_bucket log for execute commands."
-  type        = bool
-  default     = false
 }
 
 ###############################################################################
