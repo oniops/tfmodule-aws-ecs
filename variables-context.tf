@@ -4,7 +4,6 @@ variable "context" {
     region      = string
     project     = string
     name_prefix = string
-    pri_domain  = string
     tags        = map(string)
   })
 }

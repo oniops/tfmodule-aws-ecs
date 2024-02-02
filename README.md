@@ -1,6 +1,6 @@
 # tfmodule-aws-ecs
 
-AWS ECS 컨테이너 오케스트레이션 서비스를 구성 하는 테라폼 모듈 입니다.
+AWS ECS 클러스터 서비스를 구성 하는 테라폼 모듈 입니다.
 
 ## [ECS](https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/Welcome.html)
 ECS 는 AWS 의 다양한 서비스(기능)들과 통합과 빠르고 쉽게 구성이 가능합니다.
@@ -10,26 +10,36 @@ ECS 는 AWS 의 다양한 서비스(기능)들과 통합과 빠르고 쉽게 구
 ## Usage
 
 ```
-module "ecs" {
-  source = "git::https://code.bespinglobal.com/scm/op/tfmodule-aws-ecs.git"
-  
-  context = module.ctx.context
-  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
-  container_insights = true
-
-  default_capacity_provider_strategy = [
-    {
-      capacity_provider = "FARGATE"
-      weight            = 1
-    }
-  ]
-}
-
 module "ctx" {
   source = "git::https://code.bespinglobal.com/scm/op/tfmodule-context.git"
   context = {  
     # ... You need to define context variables ...
   }
+}
+
+module "ecs" {
+  source = "git::https://code.bespinglobal.com/scm/op/tfmodule-aws-ecs.git"
+  
+  context = module.ctx.context
+  container_insights            = true
+  fargate_capacity_providers = {
+    FARGATE = {
+      default_capacity_provider_strategy = {
+        weight = 1
+      }
+    }
+    FARGATE_SPOT = {
+      default_capacity_provider_strategy = {
+        weight = 50
+      }
+    }
+  }
+  # kms_key_id                    = "arn:aws:kms:<region>:<account>:key/<kms-key-id>"
+  create_cloudwatch_log_group   = true
+  execute_command_configuration = {
+    logging = "DEFAULT"
+  }
+
 }
 ```
 

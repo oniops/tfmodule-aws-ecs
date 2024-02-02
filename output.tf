@@ -15,5 +15,5 @@ output "ecs_cluster_name" {
 
 output "ecs_task_execution_role_arn" {
   description = "The ARN of ECS task execution role"
-  value       = concat(aws_iam_role.ecs_task_execution_role.*.arn, [""])[0]
+  value       = concat(aws_iam_role.ecs.*.arn, [""])[0]
 }
