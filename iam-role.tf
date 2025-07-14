@@ -16,10 +16,10 @@ locals {
     }
   )
 
-  ecs_task_execution_policies = local.create_custom_policy ? {
-    AmazonECSTaskExecutionRolePolicy = data.aws_iam_policy.this[0].arn
-    EcsTaskExecutionPolicy           = aws_iam_policy.this[0].arn
-  } : {}
+  ecs_task_execution_policies = merge({ AmazonECSTaskExecutionRolePolicy = data.aws_iam_policy.this[0].arn },
+    local.create_custom_policy ? { EcsTaskExecutionPolicy = aws_iam_policy.this[0].arn } : {}
+  )
+
 }
 
 resource "aws_iam_role" "this" {
