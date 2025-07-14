@@ -19,7 +19,7 @@ variable "capacity_providers" {
 variable "default_capacity_provider_strategy" {
   description = "The capacity provider strategy to use by default for the cluster. Can be one or more."
   type        = list(map(any))
-  default     = [
+  default = [
     {
       capacity_provider = "FARGATE"
       weight            = 1
@@ -45,7 +45,38 @@ variable "ecs_task_role_name" {
   default     = null
 }
 
-###
+variable "custom_task_execution_policy" {
+  type        = any
+  default     = {}
+  description = <<-EOF
+Define custom policies for task execution in an ECS cluster.
+
+  custom_task_execution_policy = {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowSecretsManagerRead",
+            "Action": [
+                "secretsmanager:ListSecrets",
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:secretsmanager:ap-northeast-2:111122223333:secret:dev/xxx/xxx/*"
+        },
+        {
+            "Sid": "AllowKMS",
+            "Action": [
+                "kms:GenerateDataKey*",
+                "kms:Decrypt"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:kms:ap-northeast-2:111122223333:key/007eb150-de21-xxxx"
+        }
+    ]
+}
+EOF
+
+}
+
 
 variable "kms_key_id" {
   description = "The AWS Key Management Service key ID (KMS_ARN) to encrypt the data between the local client and the container."
