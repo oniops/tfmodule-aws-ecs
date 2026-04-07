@@ -1,5 +1,5 @@
 locals {
-  policy_name                  = "${var.context.project}EcsTaskExecutionPolicy"
+  policy_name                  = var.ecs_task_policy_name == null ? "${var.context.project}EcsTaskExecutionPolicy" : var.ecs_task_policy_name
   create_custom_policy         = var.create && var.create_ecs_task_execution_role && length(var.custom_task_execution_policy) > 1
   custom_task_execution_policy = jsonencode(var.custom_task_execution_policy)
 }

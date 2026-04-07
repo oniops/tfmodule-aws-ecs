@@ -40,7 +40,13 @@ variable "create_ecs_task_execution_role" {
 }
 
 variable "ecs_task_role_name" {
-  description = "Whether to create task-execution-role for this ECS Cluster. if not set automatically generate it."
+  description = "Name of the ECS task execution role. If not provided, it will be automatically created."
+  type        = string
+  default     = null
+}
+
+variable "ecs_task_policy_name" {
+  description = "Name of the IAM policy to attach to the ECS task execution role. If not provided, it will be automatically created."
   type        = string
   default     = null
 }
